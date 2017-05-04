@@ -1,4 +1,3 @@
-from django.conf.urls.defaults import *
 from guestbook.views import IndexView, SignView
 from django.conf.urls import url
 

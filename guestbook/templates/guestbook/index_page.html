@@ -3,7 +3,6 @@
     <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
   </head>
   <body>
-
     {% for greeting in greetings %}
       {% if greeting.author.nickname %}
         <b>{{ greeting.author }}</b> wrote:
@@ -12,8 +11,6 @@
       {% endif %}
       <blockquote>{{ greeting.content|escape }}</blockquote>
     {% endfor %}
-
-
     <a href="{{ url }}">{{ url_linktext }}</a>
 	<a href="{% url signview %}?guestbook_name={{guestbook_name}}"> Sign Post </a>
   </body>
