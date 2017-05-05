@@ -3,11 +3,11 @@ from django.views.generic import FormView
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from guestbook.forms import SignForm
-from guestbook.models import Greeting, GuestBookKey
+from guestbook.models import Greeting, guestbook_key
 
 
 class SignView(FormView):
-	template_name = "sign_page.html"
+	template_name = "guestbook/sign_page.html"
 	form_class = SignForm
 	success_url = reverse_lazy('indexview')
 
@@ -37,14 +37,17 @@ class SignView(FormView):
 		else:
 			return self.form_invalid(form)
 
-	@ndb.transactional(retries=4)
 	def form_valid(self, form, **kwargs):
 		name = form.cleaned_data['name']
 		message = form.cleaned_data['message']
-		greeting = Greeting(parent=GuestBookKey.guestbook_key(name))
+		greeting = Greeting(parent=guestbook_key(name))
 		if users.get_current_user():
 			greeting.author = users.get_current_user()
 		greeting.guestbook_name = name
 		greeting.content = message
-		greeting.put()
+
+		@ndb.transactional(retries=4)
+		def put_greeting():
+			greeting.put()
+		put_greeting()
 		return super(SignView, self).form_valid(form, **kwargs)

@@ -1,16 +1,16 @@
 from django.views.generic import TemplateView
 from google.appengine.api import users
-from guestbook.models import Greeting, DEFAULT_GUESTBOOK_NAME, GuestBookKey
+from guestbook.models import Greeting, DEFAULT_GUESTBOOK_NAME, guestbook_key
 
 
 class IndexView(TemplateView):
 
-	template_name = "index_page.html"
+	template_name = "guestbook/index_page.html"
 	model = Greeting
 
 	def get_context_data(self, **kwargs):
 		guestbook_name = self.request.GET.get('guestbook_name', DEFAULT_GUESTBOOK_NAME)
-		greeting_query = Greeting.query(ancestor=GuestBookKey.guestbook_key(guestbook_name)).order(
+		greeting_query = Greeting.query(ancestor=guestbook_key(guestbook_name)).order(
 			-Greeting.date)
 		greetings = greeting_query.fetch(10)
 		if users.get_current_user():
