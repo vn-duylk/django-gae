@@ -3,8 +3,8 @@ from django.views.generic import FormView
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from guestbook.forms import SignForm
-from guestbook.models import Greeting, guestbook_key
-
+from guestbook.models import Greeting
+from guestbook.models import guestbook_key
 
 class SignView(FormView):
 	template_name = "guestbook/sign_page.html"

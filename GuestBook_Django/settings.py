@@ -109,7 +109,6 @@ ROOT_URLCONF = 'GuestBook_Django.urls'
 
 ROOT_PATH = os.path.dirname(__file__)
 TEMPLATE_ROOT = os.path.join(ROOT_PATH, 'templates')
-#TEMPLATE_DIRS = (os.path.join(ROOT_PATH, "templates"),)
 TEMPLATE_DIRS = (TEMPLATE_ROOT,)
 # TEMPLATE_DIRS = (
 #     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
