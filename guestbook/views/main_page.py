@@ -4,6 +4,7 @@ from google.appengine.api import users
 from guestbook.models import Greeting, DEFAULT_GUESTBOOK_NAME
 from guestbook.models import guestbook_key
 
+
 class IndexView(TemplateView):
 
 	template_name = "guestbook/index_page.html"

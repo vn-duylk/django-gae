@@ -1,16 +1,13 @@
 from google.appengine.api import taskqueue
+from guestbook.views import send_mail
 import webapp2
 import logging
-from google.appengine.api import users
-from guestbook.views import send_mail
-from guestbook.models import Greeting
 
 
-def add_task_queue(content):
-	#greeting = Greeting()
+def add_task_queue(sender, content):
 	task = taskqueue.add(
 		url='/task_queue_handler',
-		params={'sender': users.get_current_user(), 'subject': 'New greeting has been signed',
+		params={'sender': sender, 'subject': 'New greeting has been signed',
 				'content': content})
 
 
