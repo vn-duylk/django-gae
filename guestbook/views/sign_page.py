@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import FormView
 from google.appengine.api import users
@@ -5,6 +6,7 @@ from google.appengine.ext import ndb
 from guestbook.forms import SignForm
 from guestbook.models import Greeting
 from guestbook.models import guestbook_key
+from guestbook.views import using_task_queue
 
 class SignView(FormView):
 	template_name = "guestbook/sign_page.html"
@@ -50,4 +52,5 @@ class SignView(FormView):
 		def put_greeting():
 			greeting.put()
 		put_greeting()
+		using_task_queue.add_task_queue()
 		return super(SignView, self).form_valid(form, **kwargs)
