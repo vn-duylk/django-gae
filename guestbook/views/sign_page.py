@@ -8,6 +8,7 @@ from guestbook.models import Greeting
 from guestbook.models import guestbook_key
 from guestbook.views import using_task_queue
 
+
 class SignView(FormView):
 	template_name = "guestbook/sign_page.html"
 	form_class = SignForm
