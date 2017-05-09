@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from google.appengine.api import  mail
+from google.appengine.api import mail, users
 
 
 def send_mail(sender, subject, content):
 	message = mail.EmailMessage(
 		sender=sender,
 		subject=subject,
-		body=content
+		body=content,
+		to="admin <admin@example.com>",
 	)
-	message.to = "admin <admin@example.com>"
 	message.send()
