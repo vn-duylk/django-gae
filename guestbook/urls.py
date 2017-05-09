@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from guestbook.views.main_page import IndexView
 from guestbook.views.sign_page import SignView
 from django.conf.urls import url
