@@ -3,14 +3,36 @@
     <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
   </head>
   <body>
-    {% for greeting in greetings %}
-      {% if greeting.author.nickname %}
-        <b>{{ greeting.author }}</b> wrote:
-      {% else %}
-        An anonymous person wrote:
-      {% endif %}
-      <blockquote>{{ greeting.content|escape }}</blockquote>
-    {% endfor %}
+    <table>
+        {% for greeting in greetings %}
+      <tr>
+        <td>
+          {% if greeting.author.nickname %}
+            <b>{{ greeting.author }}</b> wrote:
+          {% else %}
+            An anonymous person wrote:
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <blockquote>{{ greeting.content|escape }}</blockquote>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="{% url updateview %}?guestbook_id={{ greeting.key.id }}&guestbook_name={{guestbook_name}}">Update</a>
+          <form id="deleteform_{{ greeting.key.id }}"
+                action="{% url deleteview greeting.key.id guestbook_name %}" method="post">
+            {% csrf_token %}
+            <a href="#"
+               onclick="document.getElementById('deleteform_{{ greeting.key.id }}').submit();">
+              Delete</a>
+          </form>
+        </td>
+      </tr>
+        {% endfor %}
+    </table>
     <a href="{{ url }}">{{ url_linktext }}</a>
 	<a href="{% url signview %}?guestbook_name={{guestbook_name}}"> Sign Post </a>
   </body>

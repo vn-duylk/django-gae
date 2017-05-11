@@ -32,14 +32,6 @@ class SignView(FormView):
 		guestbook_name = self.request.GET.get('guestbook_name')
 		return guestbook_name
 
-	def post(self, request, *args, **kwargs):
-		form_class = self.get_form_class()
-		form = self.get_form(form_class)
-		if form.is_valid():
-			return self.form_valid(form)
-		else:
-			return self.form_invalid(form)
-
 	def form_valid(self, form, **kwargs):
 		name = form.cleaned_data['name']
 		message = form.cleaned_data['message']
@@ -53,7 +45,7 @@ class SignView(FormView):
 		def put_greeting():
 			greeting.put()
 
+		put_greeting()
 		if users.get_current_user():
-			put_greeting()
 			using_task_queue.add_task_queue(greeting.author, greeting.content)
 		return super(SignView, self).form_valid(form, **kwargs)
