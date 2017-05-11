@@ -48,4 +48,6 @@ class SignView(FormView):
 		if users.get_current_user():
 			put_greeting()
 			using_task_queue.add_task_queue(greeting.author, greeting.content)
+		else:
+			put_greeting()
 		return super(SignView, self).form_valid(form, **kwargs)
