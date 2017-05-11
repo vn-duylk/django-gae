@@ -11,8 +11,6 @@ from guestbook.views import using_task_queue
 class UpdateView(FormView):
 	template_name = "guestbook/update_page.html"
 	form_class = UpdateForm
-	success_url = "../"
-
 
 	def get_initial(self):
 		initial = super(UpdateView, self).get_initial()
@@ -48,14 +46,6 @@ class UpdateView(FormView):
 		entity = Greeting.get_by_id(self.get_guestbook_id(), guestbook_key(
 			self.get_guestbook_name()))
 		return entity
-
-	def post(self, request, *args, **kwargs):
-		form_class = self.get_form_class()
-		form = self.get_form(form_class)
-		if form.is_valid():
-			return self.form_valid(form)
-		else:
-			return self.form_invalid(form)
 
 	def form_valid(self, form, **kwargs):
 		name = form.cleaned_data['name']

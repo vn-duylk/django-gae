@@ -5,7 +5,6 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 from guestbook.models import Greeting, guestbook_key
 from guestbook.views import using_task_queue
-import logging
 
 
 class DeleteView(TemplateView):
@@ -15,7 +14,6 @@ class DeleteView(TemplateView):
 		guestbook_name = kwargs['guestbook_name']
 		guestbook_id = int(kwargs['guestbook_id'])
 		self.delete_guestbook(guestbook_name, guestbook_id)
-		logging.info(self.delete_guestbook(guestbook_name, guestbook_id))
 		url = reverse_lazy('indexview')
 		return redirect('%s?guestbook_name=%s' % (url, guestbook_name))
 
