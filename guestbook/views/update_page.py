@@ -61,10 +61,7 @@ class UpdateView(FormView):
 			greeting.put()
 
 		user = users.get_current_user()
-		if users.is_current_user_admin():
-			put_greeting()
-			using_task_queue.add_task_queue(greeting.author, greeting.content)
-		elif user == greeting.author:
+		if users.is_current_user_admin() or user == greeting.author:
 			put_greeting()
 			using_task_queue.add_task_queue(greeting.author, greeting.content)
 		return super(UpdateView, self).form_valid(form, **kwargs)

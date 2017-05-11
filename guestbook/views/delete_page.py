@@ -1,8 +1,11 @@
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponseForbidden
+
 from google.appengine.api import users
 from google.appengine.ext import ndb
+
 from guestbook.models import Greeting, guestbook_key
 from guestbook.views import using_task_queue
 
@@ -26,14 +29,11 @@ class DeleteView(TemplateView):
 			greeting.key.delete()
 
 		if greeting:
-			if users.is_current_user_admin():
+			if users.is_current_user_admin() or user and greeting.author == user:
 				delete_greeting()
 				using_task_queue.add_task_queue(greeting.author, greeting.content)
 			else:
-				if user and greeting.author == user:
-					delete_greeting()
-					using_task_queue.add_task_queue(greeting.author, greeting.content)
-		return greeting
+				raise HttpResponseForbidden("Method not allowed")
 
 	def get_guestbook_by_id(self, guestbook_name, guestbook_id):
 		entity = Greeting.get_by_id(guestbook_id, guestbook_key(guestbook_name))
