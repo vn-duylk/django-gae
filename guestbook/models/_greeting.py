@@ -7,3 +7,5 @@ class Greeting(ndb.Model):
 	author = ndb.UserProperty()
 	content = ndb.StringProperty(indexed=False)
 	date = ndb.DateTimeProperty(auto_now_add=True)
+	date_update = ndb.DateTimeProperty(auto_now=True)
+	updated_by = ndb.UserProperty()

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from google.appengine.api import mail, users
+from google.appengine.api import mail
 
 
 def send_mail(sender, subject, content):

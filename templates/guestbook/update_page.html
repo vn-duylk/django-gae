@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
+  </head>
+  <body>
+    <form action="/update/?guestbook_name={{ guestbook_name }}&guestbook_id={{ guestbook_id }}"
+          method="post">
+      {% csrf_token %}
+	    {{ form.as_p }}
+      <div><input type="submit" value="Update GuestBook"></div>
+    </form>
+  </body>
+</html>
