@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+
 from django.views.generic import TemplateView
+
 from google.appengine.api import users
-from guestbook.models import Greeting, DEFAULT_GUESTBOOK_NAME, guestbook_key
+
+from guestbook.models import Greeting, DEFAULT_GUESTBOOK_NAME
 
 
 class IndexView(TemplateView):
@@ -11,9 +14,7 @@ class IndexView(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		guestbook_name = self.request.GET.get('guestbook_name', DEFAULT_GUESTBOOK_NAME)
-		greeting_query = Greeting.query(ancestor=guestbook_key(guestbook_name)).order(
-			-Greeting.date)
-		greetings = greeting_query.fetch(10)
+		greetings = Greeting.get_greeting(guestbook_name)
 		if users.get_current_user():
 			url = users.create_logout_url(self.request.get_full_path())
 			url_linktext = 'Logout'

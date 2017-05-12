@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse_lazy
@@ -6,7 +8,7 @@ from django.http import HttpResponseForbidden
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
-from guestbook.models import Greeting, guestbook_key
+from guestbook.models import Greeting
 from guestbook.views import using_task_queue
 
 
@@ -21,7 +23,7 @@ class DeleteView(TemplateView):
 		return redirect('%s?guestbook_name=%s' % (url, guestbook_name))
 
 	def delete_guestbook(self,  guestbook_name, guestbook_id):
-		greeting = self.get_guestbook_by_id(guestbook_name, guestbook_id)
+		greeting = Greeting.get_guestbook_by_id(guestbook_id, guestbook_name)
 		user = users.get_current_user()
 
 		@ndb.transactional
@@ -34,7 +36,3 @@ class DeleteView(TemplateView):
 				using_task_queue.add_task_queue(greeting.author, greeting.content)
 			else:
 				raise HttpResponseForbidden("Method not allowed")
-
-	def get_guestbook_by_id(self, guestbook_name, guestbook_id):
-		entity = Greeting.get_by_id(guestbook_id, guestbook_key(guestbook_name))
-		return entity

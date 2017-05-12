@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import FormView
+
 from google.appengine.ext import ndb
 from google.appengine.api import users
+
 from guestbook.forms import UpdateForm
-from guestbook.models import Greeting, guestbook_key
+from guestbook.models import Greeting
 from guestbook.views import using_task_queue
 
 
@@ -16,7 +19,8 @@ class UpdateView(FormView):
 		initial = super(UpdateView, self).get_initial()
 		initial['name'] = self.get_guestbook_name()
 		initial['guestbook_id'] = self.get_guestbook_id()
-		greeting = self.get_guestbook_by_id()
+		greeting = Greeting.get_guestbook_by_id(self.get_guestbook_id(), self.get_guestbook_name())
+
 		if greeting:
 			initial['message'] = greeting.content
 		return initial
@@ -42,26 +46,20 @@ class UpdateView(FormView):
 		guestbook_id = self.request.GET.get('guestbook_id','')
 		return int(guestbook_id)
 
-	def get_guestbook_by_id(self):
-		entity = Greeting.get_by_id(self.get_guestbook_id(), guestbook_key(
-			self.get_guestbook_name()))
-		return entity
-
 	def form_valid(self, form, **kwargs):
-		name = form.cleaned_data['name']
 		message = form.cleaned_data['message']
-		greeting = self.get_guestbook_by_id()
-		if greeting:
-			greeting.content = message
-		if users.get_current_user():
-			greeting.updated_by = users.get_current_user()
+		greeting = Greeting.get_guestbook_by_id(self.get_guestbook_id(), self.get_guestbook_name())
 
 		@ndb.transactional(retries=4)
 		def put_greeting():
+			greeting.content = message
 			greeting.put()
 
-		user = users.get_current_user()
-		if users.is_current_user_admin() or user == greeting.author:
-			put_greeting()
-			using_task_queue.add_task_queue(greeting.author, greeting.content)
+		if greeting:
+			user = users.get_current_user()
+			if user:
+				if users.is_current_user_admin() or user == greeting.author:
+					greeting.updated_by = user
+					put_greeting()
+					using_task_queue.add_task_queue(greeting.author, greeting.content)
 		return super(UpdateView, self).form_valid(form, **kwargs)
