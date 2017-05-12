@@ -11,7 +11,7 @@ class GreetingService(JsonResponse, TemplateView):
 
 	def get_context_data(self, **kwargs):
 		guestbook_name = kwargs['guestbook_name']
-		greetings = Greeting.get_greeting(guestbook_name)
+		greetings = Greeting.get_greetings(guestbook_name)
 		context = {}
 		results = []
 		context['guestbook_name'] = guestbook_name

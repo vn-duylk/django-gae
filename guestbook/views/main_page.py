@@ -14,7 +14,7 @@ class IndexView(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		guestbook_name = self.request.GET.get('guestbook_name', DEFAULT_GUESTBOOK_NAME)
-		greetings = Greeting.get_greeting(guestbook_name)
+		greetings = Greeting.get_greetings(guestbook_name)
 		if users.get_current_user():
 			url = users.create_logout_url(self.request.get_full_path())
 			url_linktext = 'Logout'
