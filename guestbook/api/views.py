@@ -2,7 +2,7 @@
 
 from django.views.generic import TemplateView, FormView
 
-from guestbook.models import Greeting, DEFAULT_GUESTBOOK_NAME
+from guestbook.models import Greeting
 from guestbook.forms import GreetingForm
 from guestbook.api.JsonResponse import JsonResponse
 
@@ -10,7 +10,7 @@ from guestbook.api.JsonResponse import JsonResponse
 class GreetingService(JsonResponse, TemplateView):
 
 	def get_context_data(self, **kwargs):
-		guestbook_name = self.request.GET.get('guestbook_name', DEFAULT_GUESTBOOK_NAME)
+		guestbook_name = kwargs['guestbook_name']
 		greetings = Greeting.get_greeting(guestbook_name)
 		context = {}
 		results = []
