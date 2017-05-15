@@ -28,7 +28,7 @@ class GreetingService(JsonResponse, TemplateView):
 			context['next_cursor'] = cursor
 			context['total_items'] = len(results)
 		except BaseException:
-			raise Http404("Not Found")
+			return self.render_to_response({'msg':'error'}, status=404)
 		return context
 
 
