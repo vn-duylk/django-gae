@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.views.generic import TemplateView
+from django.http import Http404
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -33,7 +34,6 @@ class IndexView(TemplateView):
 			context['guestbook_name'] = guestbook_name
 			context['url_linktext'] = url_linktext
 			context['url'] = url
-		except BaseException as e:
-			print e.message
-
+		except BaseException:
+			raise Http404("Not Found")
 		return context
