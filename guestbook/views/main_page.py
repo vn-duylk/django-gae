@@ -19,7 +19,7 @@ class IndexView(TemplateView):
 		try:
 			cursor = ndb.Cursor(urlsafe=self.request.GET.get('cursor', ''))
 			results = int(self.request.GET.get('results', 4))
-			greetings, cursor, more = Greeting.get_greetings(guestbook_name, cursor, results)
+			greetings, cursor, more = Greeting.list(guestbook_name, cursor, results)
 			if users.get_current_user():
 				url = users.create_logout_url(self.request.get_full_path())
 				url_linktext = 'Logout'

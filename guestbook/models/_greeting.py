@@ -20,7 +20,7 @@ class Greeting(ndb.Model):
 	updated_by = ndb.UserProperty()
 
 	@classmethod
-	def get_greetings(self, guestbook_name, cursor, num_result):
+	def list(self, guestbook_name, cursor, num_result):
 		greeting_query = Greeting.query(ancestor=guestbook_key(guestbook_name)).order(
 			-Greeting.date)
 		greets, next_cursor, more = greeting_query.fetch_page(num_result, start_cursor=cursor)
