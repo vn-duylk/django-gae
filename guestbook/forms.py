@@ -17,4 +17,4 @@ class UpdateForm(forms.Form):
 class GreetingForm(forms.Form):
 	guestbook_id = forms.CharField(widget=forms.HiddenInput())
 	name = forms.CharField(label='Name', max_length=100)
-	message = forms.CharField(widget=forms.Textarea, max_length=1000, required=True)
+	message = forms.CharField(widget=forms.Textarea, max_length=1000, required=False)

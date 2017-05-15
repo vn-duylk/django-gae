@@ -61,5 +61,6 @@ class UpdateView(FormView):
 				if users.is_current_user_admin() or user == greeting.author:
 					greeting.updated_by = user
 					put_greeting()
-					using_task_queue.add_task_queue(greeting.author, greeting.content)
+					using_task_queue.add_task_queue(greeting.author, "Greeting has been "
+					                                                 "updated", greeting.content)
 		return super(UpdateView, self).form_valid(form, **kwargs)

@@ -33,6 +33,7 @@ class DeleteView(TemplateView):
 		if greeting:
 			if users.is_current_user_admin() or user and greeting.author == user:
 				delete_greeting()
-				using_task_queue.add_task_queue(greeting.author, greeting.content)
+				using_task_queue.add_task_queue(greeting.author, "Greeting has been deleted",
+				                                "Greeting has been deleted")
 			else:
 				raise HttpResponseForbidden("Method not allowed")

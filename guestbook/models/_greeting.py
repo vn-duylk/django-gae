@@ -2,6 +2,7 @@
 
 from google.appengine.ext import ndb
 
+
 DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
 
 
@@ -19,11 +20,14 @@ class Greeting(ndb.Model):
 	updated_by = ndb.UserProperty()
 
 	@classmethod
-	def get_greetings(self, guestbook_name):
+	def get_greetings(self, guestbook_name, cursor, num_pages):
 		greeting_query = Greeting.query(ancestor=guestbook_key(guestbook_name)).order(
 			-Greeting.date)
-		greetings = greeting_query.fetch(10)
-		return greetings
+		greets, next_cursor, more = greeting_query.fetch_page(num_pages, start_cursor=cursor)
+		next_c = None
+		if more:
+			next_c = next_cursor.urlsafe()
+		return greets, next_c, more
 
 	@classmethod
 	def get_guestbook_by_id(self, guestbook_id, guestbook_name):
