@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import FormView
+
 from google.appengine.api import users
 from google.appengine.ext import ndb
+
 from guestbook.forms import SignForm
 from guestbook.models import Greeting
 from guestbook.models import guestbook_key
@@ -47,5 +50,6 @@ class SignView(FormView):
 
 		put_greeting()
 		if users.get_current_user():
-			using_task_queue.add_task_queue(greeting.author, greeting.content)
+			using_task_queue.add_task_queue(greeting.author, "New greeting has been signed",
+			                                greeting.content)
 		return super(SignView, self).form_valid(form, **kwargs)
