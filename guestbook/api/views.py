@@ -6,7 +6,7 @@ from django.http import Http404
 from google.appengine.ext import ndb
 from google.appengine.api import datastore_errors, users
 
-from guestbook.models import Greeting
+from guestbook.models import Greeting as g
 from guestbook.forms import GreetingForm
 from guestbook.api.JsonResponse import JsonResponse
 import json
@@ -23,7 +23,7 @@ class Greetings(JsonResponse, TemplateView):
 		except datastore_errors.BadQueryError:
 			raise Http404("Not Found")
 		limit = int(self.request.GET.get('limit', 4))
-		greetings, cursor, results = Greeting.list(guestbook_name, cur, limit)
+		greetings, cursor, results = g.list(guestbook_name, cur, limit)
 		results = []
 		context['guestbook_name'] = guestbook_name
 		for greeting in greetings:
@@ -41,7 +41,7 @@ class Greeting(JsonResponse, FormView):
 		try:
 			guestbook_name = kwargs['guestbook_name']
 			guestbook_id = kwargs['guestbook_id']
-			entity = Greeting.get_guestbook_by_id(int(guestbook_id), guestbook_name)
+			entity = g.get_guestbook_by_id(int(guestbook_id), guestbook_name)
 			context = entity.to_resource_dict(guestbook_name)
 		except BaseException:
 			return self.render_to_response({'msg': 'error'}, status=404)
@@ -57,7 +57,7 @@ class Greeting(JsonResponse, FormView):
 		message = form.cleaned_data['message']
 		guestbook_id = int(form.cleaned_data['guestbook_id'])
 		guestbook_name = form.cleaned_data['guestbook_name']
-		greeting = Greeting.get_guestbook_by_id(guestbook_id, guestbook_name)
+		greeting = g.get_guestbook_by_id(guestbook_id, guestbook_name)
 
 		@ndb.transactional(retries=4)
 		def put_greeting():
@@ -71,6 +71,7 @@ class Greeting(JsonResponse, FormView):
 					greeting.updated_by = user
 					put_greeting()
 					return self.render_to_response({'msg': 'Success'}, status=200)
+				return self.render_to_response({'msg': 'Forbidden'}, status=403)
 			return self.render_to_response({'msg': 'Required Login'}, status=401)
 		return self.render_to_response({'msg': 'Not Found'}, status=404)
 
@@ -85,7 +86,7 @@ class Greeting(JsonResponse, FormView):
 		try:
 			guestbook_name = kwargs['guestbook_name']
 			guestbook_id = int(kwargs['guestbook_id'])
-			greeting = Greeting.get_guestbook_by_id(guestbook_id, guestbook_name)
+			greeting = g.get_guestbook_by_id(guestbook_id, guestbook_name)
 		except BaseException:
 			return self.render_to_response({'msg': 'Error'}, status=400)
 
