@@ -12,7 +12,7 @@ from guestbook.api.JsonResponse import JsonResponse
 import json
 
 
-class GreetingService(JsonResponse, TemplateView):
+class Greetings(JsonResponse, TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = {}
@@ -34,7 +34,7 @@ class GreetingService(JsonResponse, TemplateView):
 		return context
 
 
-class GreetingDetail(JsonResponse, FormView):
+class Greeting(JsonResponse, FormView):
 	form_class = GreetingForm
 
 	def get(self, request, *args, **kwargs):
@@ -70,7 +70,7 @@ class GreetingDetail(JsonResponse, FormView):
 				if users.is_current_user_admin() or user == greeting.author:
 					greeting.updated_by = user
 					put_greeting()
-				return self.render_to_response({'msg': 'Success'}, status=200)
+					return self.render_to_response({'msg': 'Success'}, status=200)
 			return self.render_to_response({'msg': 'Required Login'}, status=401)
 		return self.render_to_response({'msg': 'Not Found'}, status=404)
 
@@ -79,7 +79,7 @@ class GreetingDetail(JsonResponse, FormView):
 		body = json.loads(content)
 		kwargs.update(body)
 		self.kwargs = kwargs
-		return super(GreetingDetail, self).put(*args, **kwargs)
+		return super(Greeting, self).put(*args, **kwargs)
 
 	def delete(self, request, *args, **kwargs):
 		try:
