@@ -20,7 +20,6 @@ class UpdateView(FormView):
 		initial['name'] = self.get_guestbook_name()
 		initial['guestbook_id'] = self.get_guestbook_id()
 		greeting = Greeting.get_guestbook_by_id(self.get_guestbook_id(), self.get_guestbook_name())
-
 		if greeting:
 			initial['message'] = greeting.content
 		return initial
@@ -43,7 +42,7 @@ class UpdateView(FormView):
 		return guestbook_name
 
 	def get_guestbook_id(self):
-		guestbook_id = self.request.GET.get('guestbook_id','')
+		guestbook_id = self.request.GET.get('guestbook_id', '')
 		return int(guestbook_id)
 
 	def form_valid(self, form, **kwargs):

@@ -1,6 +1,43 @@
 <html>
   <head>
     <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+       function csrfSafeMethod(method) {
+			// these HTTP methods do not require CSRF protection
+			return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
+		$.ajaxSetup({
+			crossDomain: false, // obviates need for sameOrigin test
+			beforeSend: function(xhr, settings) {
+				if (!csrfSafeMethod(settings.type)) {
+					xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+				}
+			}
+		});
+//       $.ajax({
+//        type: 'DELETE',
+//        url: 'http://127.0.0.1:8080/api/v1/default_guestbook/5275456790069248',
+//        success: function () {
+//        	alert('Object deleted')
+//        },
+//        failure: function () {
+//        	alert('Error')
+//        }
+//      });
+
+//      $.ajax({
+//        type: 'PUT',
+//        url: 'http://127.0.0.1:8080/api/v1/default_guestbook/6473924464345088',
+//	    data: JSON.stringify({'message': 'new content'}),
+//        success: function (data) {
+//        	alert('Object updated')
+//        },
+//        failure: function () {
+//        	alert('Error')
+//        }
+//      });
+    </script>
   </head>
   <body>
     <table>
