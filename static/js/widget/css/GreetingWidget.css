@@ -1,35 +1,40 @@
-.greetingWidget {
+div.greetingObject {
+	background-color: #fff;
 	border: 1px solid black;
 	width: 400px;
 	padding: 10px;
 	overflow: hidden; /* I hear this helps clear floats inside */
 }
 
-.greetingWidget h3 {
+div.greetingObject:hover {
+	background-color: #def;
+}
+
+h3 {
 	font-size: 1.5em;
 	font-style: italic;
 	text-align: center;
 	margin: 0px;
 }
 
-.greetingWidget p.author {
+p.author {
 	font-style: normal;
 	text-align: center;
 	font-weight: bold;
 	margin: 0px;
 }
 
-.greetingWidget p.content {
+p.content {
 	font-style: normal;
 	text-align: center;
 	margin: 10px;
 }
 
-.greetingWidget p.date {
+p.date {
 	position: absolute;
 }
 
-.greetingWidget img {
+img {
 	float: right;
 	padding: 5px;
 }

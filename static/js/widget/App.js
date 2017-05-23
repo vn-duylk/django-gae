@@ -1,13 +1,13 @@
 define([
-	"dojo/_base/declare",
-	"dojo/request",
+	"dojo/request/xhr",
 	"dojo/_base/array",
 	"dojo/dom",
 	"widgets/GreetingWidget"
-	], function(declare, request, arrayUtil, dom, GreetingWidget){
+	], function(xhr, arrayUtil, dom, GreetingWidget){
 		return function () {
-				request("api/v1/default_guestbook/greetings/", {
-					handleAs: "json"
+				xhr.get("api/v1/default_guestbook/greetings/", {
+					handleAs: "json",
+					query: {limit: 5}
 				}).then(function (data) {
 					var greetingContainer = dom.byId("greetingContainer");
 					arrayUtil.forEach(data.greetings, function (greeting) {
