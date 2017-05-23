@@ -12,12 +12,24 @@
 	margin: 0px;
 }
 
-.greetingWidget p {
+.greetingWidget p.author {
 	font-style: normal;
-	text-align: left;
+	text-align: center;
+	font-weight: bold;
 	margin: 0px;
+}
+
+.greetingWidget p.content {
+	font-style: normal;
+	text-align: center;
+	margin: 10px;
+}
+
+.greetingWidget p.date {
+	position: absolute;
 }
 
 .greetingWidget img {
 	float: right;
+	padding: 5px;
 }

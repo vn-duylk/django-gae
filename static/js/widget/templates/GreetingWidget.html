@@ -1,8 +1,13 @@
 <div>
-	<p data-dojo-attach-point="authorNode">${author}</p>
-	<p data-dojo-attach-point="contentNode">${!content}</p>
-	<p data-dojo-attach-point="dateNode">${date}</p>
-	<img data-dojo-attach-point="avatarEditNode">
-	<img data-dojo-attach-point="avatarDeleteNode">
-
+	<div data-dojo-attach-point="informationNode">
+		<p class="author" data-dojo-attach-point="authorNode">${author}</p>
+		<p class="content" data-dojo-attach-point="contentNode">${!content}</p>
+		<p class="date" data-dojo-attach-point="dateNode">${date}</p>
+		<img data-dojo-attach-point="avatarEditNode">
+		<img data-dojo-attach-point="avatarDeleteNode">
+	</div>
+	<div data-dojo-attach-point="formEditNode">
+		<textarea data-dojo-attach-point="editContentNode">${!content}</textarea>
+		<button data-dojo-attach-point="submitNode">submit</button>
+	</div>
 </div>
