@@ -4,12 +4,14 @@
 	<link type="text/css" rel="stylesheet" href="/static/js/widget/css/GreetingWidget.css"/>
 </head>
 <body>
-<div id="greetingContainer"></div>
+<div data-dojo-type="App"></div>
 <script>
 	var dojoConfig = {
 		async: true,
+		parseOnLoad: true,
 		baseUrl: '../../static/js/dojo/1.10.4/dojo',
 		paths: {
+			js: '/static/js',
 			widgets: '/static/js/widget'
 		},
 		settings: {
@@ -19,9 +21,11 @@
 </script>
 <script type="text/javascript" src="/static/js/dojo/1.10.4/dojo/dojo.js"></script>
 <script>
-	require(["widgets/App", "dojo/domReady!"],
-		function (App) {
-			App();
+	require(["js/App", "dojo/parser", "dojo/ready"],
+		function (App, parser, ready) {
+			ready(function(){
+				parser.parse();
+			})
 		});
 </script>
 <a href="{{ url }}">{{ url_linktext }}</a>
