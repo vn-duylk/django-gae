@@ -5,59 +5,57 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/dom-style",
-	'dojo/request/xhr',
-	"dojo/on",
 	"dojo/cookie",
+	"dojo/dom-style",
+	"dojo/on",
+	'dojo/request/xhr',
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dojo/text!./templates/GreetingWidget.html"
-], function (declare, lang, domStyle, xhr, on, cookie, _WidgetBase, _TemplatedMixin, template) {
+], function (declare, lang, cookie, domStyle, on, xhr, _WidgetBase, _TemplatedMixin, template) {
 	return declare("GreetingWidget", [_WidgetBase, _TemplatedMixin], {
 		author: "Anonymous",
-		avatarEdit: require.toUrl("../static/images/edit.png"),
-		avatarDelete: require.toUrl("../static/images/delete.png"),
 		templateString: template,
 		baseClass: "greetingWidget",
+		_isEdit: false,
 
 		postCreate: function () {
 			this.inherited(arguments);
-			this._showAndHideEditContent(true);
-
+			this._toggleEdit();
 			this.own(
-					on(this.avatarEditNode, "click", lang.hitch(this, "_clickEdit")),
-					on(this.avatarDeleteNode, "click", lang.hitch(this, "_clickDelete")),
+					on(this.editNode, "click", lang.hitch(this, function () {
+						this._toggleEdit();
+					})),
+					on(this.deleteNode, "click", lang.hitch(this, "_clickDelete")),
 					on(this.submitNode, "click", lang.hitch(this, "_clickSubmit"))
 			);
 		},
 
-		_clickEdit: function () {
-			this._showAndHideEditContent(false);
-		},
-
 		_clickSubmit: function () {
-			var instance = this;
 			var content = this.editContentNode.value;
+			var instance = this;
 			xhr.put(this.url, {
 				data: JSON.stringify({message : content}),
 				headers: {
 					"X-CSRFToken": cookie("csrf_token")
 				}
 			}).then(function (data) {
-				instance._showAndHideEditContent(true);
+				instance._toggleEdit(true);
 				alert("Update successed."+ data)
-			}, function () {
-				alert("Update failed.")
+			}, function (data) {
+				alert("Update failed."+ data)
 			});
 		},
 
-		_showAndHideEditContent: function (value) {
-			if (value){
-				domStyle.set(this.informationNode, "display", "block");
-				domStyle.set(this.formEditNode, "display", "None");
-			}else{
+		_toggleEdit: function (){
+			if (this._isEdit){
 				domStyle.set(this.informationNode, "display", "None");
 				domStyle.set(this.formEditNode, "display", "block");
+				this._isEdit = false;
+			}else{
+				domStyle.set(this.informationNode, "display", "block");
+				domStyle.set(this.formEditNode, "display", "None");
+				this._isEdit = true;
 			}
 		},
 
@@ -67,25 +65,11 @@ define([
 					headers: {
 						"X-CSRFToken": cookie("csrf_token")
 					}
-				}).then(function () {
-					alert("Delete successed.")
-				}, function () {
-					alert("Deleted failed.")
+				}).then(function (data) {
+					alert("Delete successed."+data)
+				}, function (data) {
+					alert("Deleted failed."+data)
 				});
-			}
-		},
-
-		_setAvatarEditAttr: function (imagePath) {
-			if (imagePath != "") {
-				this._set("avatarEdit", imagePath);
-				this.avatarEditNode.src = imagePath;
-			}
-		},
-
-		_setAvatarDeleteAttr: function (imagePath) {
-			if (imagePath != "") {
-				this._set("avatarDelete", imagePath);
-				this.avatarDeleteNode.src = imagePath;
 			}
 		},
 	});
