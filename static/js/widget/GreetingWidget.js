@@ -1,7 +1,3 @@
-/**
- * Created by newmember on 17/05/2017.
- */
-
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",

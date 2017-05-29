@@ -7,11 +7,11 @@ define([
 	"dijit/_TemplatedMixin",
 	"dijit/_WidgetBase",
 	"widgets/GreetingWidget",
-], function (declare, arrayUtil, dom, domConstruct, xhr, _TemplatedMixin, _WidgetBase, GreetingWidget, template) {
+], function (declare, arrayUtil, dom, domConstruct, xhr, _TemplatedMixin, _WidgetBase, GreetingWidget) {
 	return declare("GreetingContainer", [_TemplatedMixin, _WidgetBase], {
-		templateString: template,
 
 		postCreate: function () {
+			this.inherited(arguments);
 			this.loadGreeting();
 		},
 
@@ -23,6 +23,7 @@ define([
 				var greetingContainer = dom.byId("greetingContainer");
 				arrayUtil.forEach(data.greetings, function (greeting) {
 					var widget = new GreetingWidget(greeting).placeAt(greetingContainer);
+					widget.startup();
 				});
 			});
 		},
