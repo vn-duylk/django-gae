@@ -1,0 +1,33 @@
+div.greetingObject {
+  background-color: #fff;
+  border: 1px solid black;
+  width: 400px;
+  padding: 10px;
+  overflow: hidden; }
+
+div.greetingObject:hover {
+  background-color: #def; }
+
+h3 {
+  font-size: 1.5em;
+  font-style: italic;
+  text-align: center;
+  margin: 0px; }
+
+p.author {
+  font-style: normal;
+  text-align: center;
+  font-weight: bold;
+  margin: 0px; }
+
+p.content {
+  font-style: normal;
+  text-align: center;
+  margin: 10px; }
+
+p.date {
+  position: absolute; }
+
+.greetingObject img {
+  float: right;
+  padding: 5px; }
